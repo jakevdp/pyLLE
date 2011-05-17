@@ -1,5 +1,11 @@
 .. -*- mode: rst -*-
 
+Under Construction!!
+====================
+This package is still under construction... cython wrappers and
+distutils installation is still not complete.  I hope to have
+it done some time this month!!
+
 About
 =====
 
