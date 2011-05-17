@@ -17,17 +17,14 @@ LLE_ext = Extension(
     "LLE",
     ["LLE.pyx"] + MatVec_sources + LLE_sources,
     language="c++",
-    include_dirs=['../lib/MatVec','../include'],
-    libraries=['stdc++','blas','lapack','arpack'],
-    library_dirs = ['/usr/lib'],
+    include_dirs=['../lib/MatVec','../include']
     )
 
 Balltree_ext = Extension(
     "ball_tree",                 
     ["ball_tree.pyx"],  
     language="c++",              
-    include_dirs=['../include'],  
-    libraries=['stdc++'],
+    include_dirs=['../include']
     )
 
 setup(cmdclass = {'build_ext': build_ext},
