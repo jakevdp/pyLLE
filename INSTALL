@@ -26,28 +26,21 @@ REQUIRED PACKAGES:
   working BLAS and LAPACK installation. 
 
 INSTALLATION
- First the setup.py file must be modified to fit your system.  Open the
-  file with a text editor, and modify the library_dirs list to point to
-  the locations of your BLAS, LAPACK, and ARPACK libraries.  Optionally,
-  you may also specify extra compile and link arguments for your system.
+ First the setup.py file must be modified to fit your system.  
+  Open pyLLE/setup.py and edit LIBS to point to the directory where your
+  BLAS, LAPACK, and ARPACK libraries are (these should look like, e.g.
+  libarpack.a)
  
- The setup file is configured for an in-place installation.  To compile 
-  and run the code, type at the command prompt
+ Once this is squared away, you can run
 
-      python setup.py build_ext --inplace
+      python setup.py build
+      python setup.py install
 
- This will create a shared-object library _LLE.so and a python 
-  executable named LLE.py.  To test this, run
-     
-      python test.py
- 
- This is not an exhaustive test - it merely runs a simple example to 
-  make sure the code has been installed correctly.
 
 DOCUMENTATION
  The python routines have a fairly complete set of documentation.  For
   help, you can run the python interpreter, and type, e.g.
-   >> import LLE
+   >> from pyLLE import LLE
    >> help(LLE)
    >> help(LLE.LLE)
   this provides information on inputs and outputs for the individual routines

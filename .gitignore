@@ -1,3 +1,9 @@
 *~
 *pyc
-LLE/build
+*.o
+*.so
+build
+dist
+pyLLE.egg-info
+pyLLE/build
+pyLLE/wrappers/build

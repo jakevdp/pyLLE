@@ -25,7 +25,6 @@ from numpy.distutils.core import setup
 #  liblapack.a
 #  libblas.a
 #  libarpack.a
-LIBS = ['/usr/lib']
 
 def configuration(parent_package='', top_path=None):
     if os.path.exists('MANIFEST'):
