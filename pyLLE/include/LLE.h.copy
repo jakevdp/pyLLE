@@ -1,0 +1,244 @@
+#ifndef LLE_H
+#define LLE_H
+
+#include "MatVec.h"
+
+typedef Matrix<double,DENSE> Mat_data_t;
+typedef Vector<double,GEN>   Vec_data_t;
+typedef Matrix<int,DENSE>    Mat_index_t;
+typedef Vector<int,GEN>      Vec_index_t;
+
+/************************************************************
+ * compute_neighbors :
+ *   inputs:  training_data : rank [D x N] matrix: N points
+ *                             in D dimensions
+ *   outputs: neighbors     : rank [k x N] matrix: on output,
+ *                             n[i,j] holds the index of the i^th
+ *                             nearest neighbor of point j
+ ************************************************************/
+void compute_neighbors(const Matrix<double>& training_data, 
+		       Matrix<int>& neighbors,
+		       bool use_tree = false,
+		       int verbose = 0);
+
+
+/************************************************************
+ * compute_neighbors :
+ *   inputs:  training_data : rank [D x N] matrix: N points
+ *                             in D dimensions
+ *            test_data     : rank [D x N2] matrix: N2 points
+ *                             in D dimensions
+ *   outputs: neighbors     : rank [k x N2] matrix: on output,
+ *                             n[i,j] holds the index of the i^th
+ *                             nearest neighbor (in training_data)
+ *                             of point j (in test_data)
+ ************************************************************/
+void compute_neighbors(const Matrix<double>& training_data, 
+		       const Matrix<double>& test_data,
+		       Matrix<int>& neighbors,
+		       bool use_tree = false,
+		       int verbose = 0);
+
+/************************************************************
+ * compute_sigma :
+ *  inputs:  training_data : rank [D x N] matrix: N points
+ *                             in D dimensions
+ *           neighbors     : rank [k x N] matrix
+ *
+ *  outputs: sigma         : rank-N array
+ *
+ ************************************************************/
+void compute_sigma(const Matrix<double>& training_data,
+		   int k,
+		   int d_out,
+		   Vector<double>& sigma,
+		   int verbose = 0);
+
+void compute_sigma(const Matrix<double>& training_data,
+		   const Matrix<int>& neighbors,
+		   int d_out,
+		   Vector<double>& sigma,
+		   int verbose = 0);
+
+/************************************************************
+ * compute_LLE_weights :
+ *  
+ ************************************************************/
+void compute_LLE_weights(const Matrix<double>& training_data,
+			 int k,
+			 Matrix<double>& weight_matrix,
+			 int verbose = 0);
+
+void compute_LLE_weights(const Matrix<double>& training_data,
+			 const Matrix<int>& neighbors,
+			 Matrix<double>& weight_matrix,
+			 int verbose = 0);
+
+/************************************************************
+ * compute_LLE_weights :
+ *  
+ ************************************************************/
+void compute_LLE_weights(const Matrix<double>& training_data,
+			 const Matrix<double>& test_data,
+			 int k,
+			 Matrix<double>& weight_matrix,
+			 int verbose = 0);
+
+void compute_LLE_weights(const Matrix<double>& training_data,
+			 const Matrix<double>& test_data,
+			 const Matrix<int>& neighbors,
+			 Matrix<double>& weight_matrix,
+			 int verbose = 0);
+
+/************************************************************
+ * compute_HLLE_weights :
+ *  
+ ************************************************************/
+void compute_HLLE_weights(const Matrix<double>& training_data,
+			  int k,
+			  Matrix<double>& weight_matrix,
+			  int d_out,
+			  int verbose = 0);
+
+void compute_HLLE_weights(const Matrix<double>& training_data,
+			  const Matrix<int>& neighbors,
+			  Matrix<double>& weight_matrix,
+			  int verbose = 0);
+
+/************************************************************
+ * compute_LLE_d_out :
+ *
+ ************************************************************/
+int compute_LLE_dim(const Matrix<double>& training_data,
+		    int k,
+		    double var,
+		    int verbose = 0);
+
+int compute_LLE_dim(const Matrix<double>& training_data,
+		    const Matrix<int>& neighbors,
+		    double var,
+		    int verbose = 0);
+
+/************************************************************
+ * LLE
+ *
+ ************************************************************/
+void LLE(const Matrix<double>& training_data,
+	 int k,
+	 Matrix<double>& projection,
+	 int verbose = 0);
+
+void LLE(const Matrix<double>& training_data,
+	 const Matrix<int>& neighbors,
+	 Matrix<double>& projection,
+	 int verbose = 0);
+
+
+/************************************************************
+ * HLLE
+ *
+ ************************************************************/
+void HLLE(const Matrix<double>& training_data,
+	  int k,
+	  Matrix<double>& projection,
+	  int verbose = 0);
+
+void HLLE(const Matrix<double>& training_data,
+	  const Matrix<int>& neighbors,
+	  Matrix<double>& projection,
+	  int verbose = 0);
+
+
+/************************************************************
+ * MLLE
+ *
+ ************************************************************/
+void MLLE(const Matrix<double>& training_data,
+	  int k,
+	  Matrix<double>& projection,
+	  double TOL = 1E-12,
+	  int verbose = 0);
+
+void MLLE(const Matrix<double>& training_data,
+	  const Matrix<int>& neighbors,
+	  Matrix<double>& projection,
+	  double TOL = 1E-12,
+	  int verbose = 0);
+
+/************************************************************
+ * project_onto_LLE
+ *
+ ************************************************************/
+void project_onto_LLE(const Matrix<double>& training_data,
+		      const Matrix<double>& test_data,
+		      int k,
+		      Matrix<double>& test_proj,
+		      int verbose = 0);
+
+void project_onto_LLE(const Matrix<double>& training_data,
+		      const Matrix<double>& training_proj,
+		      const Matrix<double>& test_data,
+		      int k,
+		      Matrix<double>& test_proj,
+		      int verbose = 0);
+
+void project_onto_LLE(const Matrix<double>& training_data,
+		      const Matrix<double>& training_proj,
+		      const Matrix<double>& test_data,
+		      const Matrix<int>& test_neighbors,
+		      Matrix<double>& test_proj,
+		      int verbose = 0);
+/************************************************************
+ * RLLE routines
+ *
+ ************************************************************/
+void compute_RLLE_scores(const Matrix<double>& training_data,
+			 int k,
+			 Vector<double>& r_scores,
+			 int d_out,
+			 int verbose = 0);
+
+void compute_RLLE_scores(const Matrix<double>& training_data,
+			 const Matrix<int>& neighbors,
+			 Vector<double>& r_scores,
+			 int d_out,
+			 int verbose = 0);
+
+void compute_weighted_neighbors(const Matrix<double>& training_data, 
+				const Vector<double>& r_scores,
+				int r,
+				Matrix<int>& neighbors,
+				int verbose = 0);
+			 
+void RLLE1(const Matrix<double>& training_data,
+	   int k,	
+	   Matrix<double>& projection,
+	   double r,
+	   char proj_type = 'L',
+	   int verbose = 0);
+
+void RLLE1(const Matrix<double>& training_data,
+	   const Matrix<int>& neighbors,	
+	   Matrix<double>& projection,
+	   double r,
+	   char proj_type = 'L',
+	   int verbose = 0);
+			 
+void RLLE2(const Matrix<double>& training_data,
+	   int k,	
+	   Matrix<double>& projection,
+	   int r,
+	   int verbose = 0);
+			 
+void RLLE2(const Matrix<double>& training_data,
+	   const Matrix<int>& neighbors,	
+	   Matrix<double>& projection,
+	   int r,
+	   int verbose = 0);
+	       
+void compute_mean_dist(const Matrix<double>& training_data,
+		       Vector<double>& mean_distances,
+		       int verbose = 0);
+		       
+
+#endif // LLE_H

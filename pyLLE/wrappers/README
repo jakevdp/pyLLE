@@ -1,0 +1,4 @@
+Note that the main setup script will not convert the pyx code to cpp.  To
+do this, run
+  python setup.py build
+in this directory.

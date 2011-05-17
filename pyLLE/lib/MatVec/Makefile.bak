@@ -1,0 +1,38 @@
+include ../../Make.inc
+
+##########################################################################
+# The rest should not need to be changed
+
+
+#Define Object dependencies
+MATVEC_OBJECTS = MatVec.o MatSym.o MatTri.o MatVecDecomp.o
+MATVEC_TEST_OBJECTS = MatVec_test.o $(MATVEC_BASE)
+
+#Define all executables
+#all :  DimReduce areig_test MatVec_test
+all: MatVec_test libMatVec.so
+
+#Dependencies and compilation of each executable
+
+MatVec_test: $(MATVEC_TEST_OBJECTS) libMatVec.so
+	$(GCC) -fPIC $^ -o $@ $(GCC_LFLAGS) -lMatVec -L.
+
+libMatVec.so: $(MATVEC_OBJECTS)
+	$(GCC) -fPIC $^ -pthread -shared -o $@ $(GCC_LFLAGS) $(LIBRARY_FLAGS)
+
+#object compilation
+.cpp.o:
+	$(GCC) -c $< -o $@ $(GCC_CFLAGS)
+
+.f.o:
+	$(F77) -c $< -o $@ $(F77_CFLAGS)
+
+clean :
+	rm -f *.o
+	rm -f *~ .*~
+
+depend:
+	makedepend *.cpp $(GCC_INCLUDE)
+
+# below here are the automatically generated dependencies
+# DO NOT DELETE

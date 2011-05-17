@@ -8,7 +8,7 @@ import sys
 import os
 import shutil
 
-DISTNAME = 'LLE'
+DISTNAME = 'pyLLE'
 DESCRIPTION = 'A python module for fast Locally Linear Embedding'
 LONG_DESCRIPTION = open('README.rst').read()
 MAINTAINER = 'Jacob Vanderplas'
@@ -21,15 +21,21 @@ VERSION = '0.1'
 import setuptools  # we are using a setuptools namespace
 from numpy.distutils.core import setup
 
+#LIBS should give the location of your systems libraries.  It should contain
+#  liblapack.a
+#  libblas.a
+#  libarpack.a
+LIBS = ['/usr/lib']
+
 def configuration(parent_package='', top_path=None):
     if os.path.exists('MANIFEST'):
         os.remove('MANIFEST')
 
     from numpy.distutils.misc_util import Configuration
     config = Configuration(None, parent_package, top_path,
-        namespace_packages=['LLE'])
+        namespace_packages=['pyLLE'])
 
-    config.add_data_files('LLE/__init__.py')
+    config.add_subpackage('pyLLE')
 
     return config
 
@@ -51,8 +57,8 @@ if __name__ == "__main__":
             shutil.rmtree(local_path)
         print("Copying source tree into build/py3k for 2to3 transformation"
               "...")
-        shutil.copytree(os.path.join(old_path, 'LLE'),
-                        os.path.join(local_path, 'LLE'))
+        shutil.copytree(os.path.join(old_path, 'pyLLE'),
+                        os.path.join(local_path, 'pyLLE'))
         import lib2to3.main
         from io import StringIO
         print("Converting to Python3 via 2to3...")
@@ -89,9 +95,6 @@ if __name__ == "__main__":
               'Programming Language :: Python',
               'Topic :: Software Development',
               'Topic :: Scientific/Engineering',
-              'Operating System :: Microsoft :: Windows',
-              'Operating System :: POSIX',
               'Operating System :: Unix',
-              'Operating System :: MacOS'
              ]
     )
