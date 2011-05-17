@@ -1,0 +1,53 @@
+pyLLE
+
+Written by:
+    Jake Vanderplas
+    Department of Astronomy, 
+    University of Washington
+    vanderplas@astro.washington.edu
+
+--------------------------------------------
+Installation instructions:
+
+REQUIRED PACKAGES:
+ This code requires a recent version of python, with the numpy package
+  installed.  See for details:
+     http://www.python.org/
+     http://numpy.scipy.org/
+  It has been tested on python v2.6 with numpy v1.4
+
+ For fast linear algebra operations, this package relies on the open-source
+  packages BLAS, LAPACK, and ARPACK.  For details on installing these,
+  see
+    http://www.netlib.org/lapack/
+    http://www.netlib.org/blas/
+    http://www.caam.rice.edu/software/ARPACK/
+  if python+numpy is installed on your system, you may already have a
+  working BLAS and LAPACK installation. 
+
+INSTALLATION
+ First the setup.py file must be modified to fit your system.  Open the
+  file with a text editor, and modify the library_dirs list to point to
+  the locations of your BLAS, LAPACK, and ARPACK libraries.  Optionally,
+  you may also specify extra compile and link arguments for your system.
+ 
+ The setup file is configured for an in-place installation.  To compile 
+  and run the code, type at the command prompt
+
+      python setup.py build_ext --inplace
+
+ This will create a shared-object library _LLE.so and a python 
+  executable named LLE.py.  To test this, run
+     
+      python test.py
+ 
+ This is not an exhaustive test - it merely runs a simple example to 
+  make sure the code has been installed correctly.
+
+DOCUMENTATION
+ The python routines have a fairly complete set of documentation.  For
+  help, you can run the python interpreter, and type, e.g.
+   >> import LLE
+   >> help(LLE)
+   >> help(LLE.LLE)
+  this provides information on inputs and outputs for the individual routines
