@@ -1,6 +1,5 @@
 import numpy
 import pylab
-from BallTree import BallTree
 
 ######################################################################
 #  Locally Linear Embedding
@@ -88,8 +87,6 @@ def LLE(M,k,m,quiet=False):
 
     m_estimate = []
     var_total = 0.0
-
-    BT = BallTree
     
     for row in range(N):
         #-----------------------------------------------
@@ -131,13 +128,13 @@ def LLE(M,k,m,quiet=False):
         #  (as in deRidder & Duin)
         r = numpy.sum(sig2[m:])
         var_total += r
-        Q += r*numpy.identity(Q.shape[0])
+        Q.flat[::k+1] += r
         #Note that Roewis et al instead uses "a correction that 
         #   is small compared to the trace":
         #r = 0.001 * float(Q.trace())
     
         #solve for weight
-        w = numpy.linalg.solve(Q,numpy.ones((Q.shape[0],1)))[:,0]
+        w = numpy.linalg.solve(Q,numpy.ones(Q.shape[0]))
         w /= numpy.sum(w)
 
         #update row of the weight matrix
@@ -195,7 +192,8 @@ def MLLE(X,k,d_out,TOL = 1E-12):
         #find regularized weights: this is like normal LLE
         Gi = X_Xi[ : , neighbors[i] ]
         Qi = numpy.dot(Gi.T,Gi)
-        Qi[range(k),range(k)] += 1E-3 * Qi.trace()
+
+        Qi.flat[::k+1] += 1E-3 #* Qi.trace()
 
         y = numpy.linalg.solve(Qi,numpy.ones(k))
         w_reg[i] = y/y.sum()
@@ -243,12 +241,13 @@ def MLLE(X,k,d_out,TOL = 1E-12):
         #  Hi*Vi.T*one(k) = alpha_i*one(s)
         # using proscription from paper
         h = alpha_i * one(si) - numpy.dot(Vi.T,one(k))
+
         nh = numpy.linalg.norm(h)
         if nh < TOL:
             h = numpy.zeros( (si,1) )
         else:
             h /= nh
-
+            
         Hi = numpy.identity(si) - 2*numpy.dot(h,h.T)
 
         Wi = numpy.dot(Vi,Hi) + (1-alpha_i) * column_vector(w_reg[i])
@@ -258,7 +257,7 @@ def MLLE(X,k,d_out,TOL = 1E-12):
         W_hat[i]-=1
             
         Phi += numpy.dot(W_hat,W_hat.T)
-
+        
     U,sig,VT = numpy.linalg.svd(Phi)
     return VT[-d_out-1:-1]
 
